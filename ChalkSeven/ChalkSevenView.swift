@@ -88,6 +88,20 @@ struct BackGrid: View {
     }
 }
 
+
+
+struct ChalkView:View {
+    @EnvironmentObject var chalk : Chalk
+    var body: some View {
+        Circle().overlay(
+            Circle()
+                .stroke(Color.orange,lineWidth: 2)
+        )
+            .foregroundColor(self.chalk.unused ? .orange : .clear)
+            .frame(width:10, height: 10)
+    }
+}
+
 struct ChalkSevenView: View {
     @EnvironmentObject var chessboard : Chessboard
     @State var newBallOffsetX: CGFloat = 0.0
@@ -129,6 +143,12 @@ struct ChalkSevenView: View {
                 self.moveNewBall(self.newBallOffsetX)
                 self.lastNewBallOffsetX = self.newBallOffsetX
         })
+            HStack {
+                ForEach(self.chessboard.chalkStack.chalks, id: \.id) {chalk in
+                    ChalkView().environmentObject(chalk)
+                }
+            }.padding(.top, 40)
+            
         }
             
         
@@ -156,6 +176,8 @@ struct ChalkSevenView: View {
         }
     }
 }
+
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {

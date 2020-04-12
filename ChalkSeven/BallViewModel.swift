@@ -62,35 +62,15 @@ class BallModel: ObservableObject, Identifiable {
     var shouldBang : Bool = false
     {
         willSet {
-//            DispatchQueue.main.async { [weak self] in
-//                if newValue == true {
-//                    withAnimation(Animation.easeIn(duration: 0.4)) {
-//                        self?.ballScale = 3.0
-//                        self?.opacity = 0
-//                        self?.objectWillChange.send()
-//                    }
-//                } else {
-                    self.objectWillChange.send()
-//                }
-//
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-//                    if self?.state != .null {
-//                        self?.ballScale = 1.0
-//                        self?.opacity = 1
-//                        self?.objectWillChange.send()
-//                    }
-//                }
-//            }
-            
+                self.objectWillChange.send()
+
         }
     }
    
     var dropOffset : CGFloat = 0.0
     {
         willSet {
-//            DispatchQueue.main.async { [weak self] in
-                self.objectWillChange.send()
-//            }
+            self.objectWillChange.send()
         }
     }
     
@@ -163,6 +143,58 @@ enum BallState: CaseIterable {
     }
 }
 
+class Chalk: ObservableObject,Identifiable {
+    let id = UUID()
+    @Published var unused : Bool = true
+}
+
+class ChalkStack: ObservableObject {
+    var totalCount:Int = 20
+    var stackEmpty: () -> Void = {}
+    @Published var chalks = [Chalk]()
+    @Published var currentChalk: Int = 0
+    
+    init(totalCount: Int) {
+        self.totalCount = totalCount
+        self.chalks = Array(repeating: Chalk(), count: totalCount)
+        for i in 0...self.totalCount - 1 {
+            self.chalks[i] = Chalk()
+        }
+    }
+    
+    convenience init() {
+        self.init(totalCount: 20)
+    }
+    
+    func indexIsValid(index:Int) -> Bool {
+        return index >= 0 && index < totalCount
+    }
+    
+    subscript(index: Int) -> Chalk {
+        get {
+            assert(indexIsValid(index: index), "Index out of range")
+            return chalks[index]
+        }
+        set {
+            assert(indexIsValid(index: index), "Index out of range")
+            chalks[index] = newValue
+        }
+    }
+    
+    func useChalk() {
+        self.currentChalk += 1
+        self[self.totalCount - self.currentChalk].unused = false
+        if self.currentChalk == self.totalCount {
+            self.stackEmpty()
+            self.currentChalk = 0
+            for item in self.chalks {
+                item.unused = true
+            }
+        }
+        
+    }
+}
+
 class Chessboard: ObservableObject {
     
     let rows: Int = 7, columns: Int = 7
@@ -171,6 +203,14 @@ class Chessboard: ObservableObject {
     
     private var needBang:Bool = false
     private var scoreTime:Int = 1
+    
+    var chalkStack: ChalkStack = ChalkStack()
+    {
+        willSet {
+            self.objectWillChange.send()
+        }
+    }
+    
     
     var grid: [BallModel] = [BallModel]()
     {
@@ -213,6 +253,11 @@ class Chessboard: ObservableObject {
         self.grid = self.randomGrid()
         self.collapse()
         self.initChess()
+        self.chalkStack.stackEmpty = rowUp
+    }
+    
+    func rowUp() {
+        
     }
     
     func initChess() {
@@ -457,6 +502,7 @@ class Chessboard: ObservableObject {
         let numCount = singleColumnBalls.filter{$0.state != .null}.count
         if numCount < rows {
             withAnimation(Animation.linear.delay(0.6)) {
+                self.chalkStack.useChalk()
                 self[rows - numCount - 1, column].copyNewBall(self.newBall)
                 
             }
