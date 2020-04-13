@@ -36,6 +36,7 @@
       "size" : "60x60"
     },
     {
+      "filename" : "chalk7_180.png",
       "idiom" : "iphone",
       "scale" : "3x",
       "size" : "60x60"
@@ -81,11 +82,13 @@
       "size" : "76x76"
     },
     {
+      "filename" : "chalk7-1.png",
       "idiom" : "ipad",
       "scale" : "2x",
       "size" : "83.5x83.5"
     },
     {
+      "filename" : "chalk7.png",
       "idiom" : "ios-marketing",
       "scale" : "1x",
       "size" : "1024x1024"

@@ -27,6 +27,13 @@ class Chessboard: ObservableObject {
         }
     }
     
+    var level: Int = 1
+    {
+        willSet {
+            self.objectWillChange.send()
+        }
+    }
+    
     var chalkStack: ChalkStack = ChalkStack()
     {
         willSet {
@@ -74,6 +81,7 @@ class Chessboard: ObservableObject {
     }
     
     func createChessBoard() {
+        self.level = 1
         self.grid = self.randomGrid()
         print("init grid:\(self.grid)")
         self.collapse()
@@ -91,6 +99,7 @@ class Chessboard: ObservableObject {
             self.shouldRowUp = false
         }
         if !self.gameOver {
+            self.level += 1
             self.operationChess()
         }
     }

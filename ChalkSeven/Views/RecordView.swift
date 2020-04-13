@@ -8,17 +8,19 @@
 
 import SwiftUI
 
-let testRecord = [Record(score: 1254, date: "2020/1/30 14:23")]
-
 
 struct RecordView: View {
+    @EnvironmentObject var recordList: RecordList
     var body: some View {
-        List(RecordList.shared.records){ record in
-            HStack {
-                Image(systemName: "star.circle.fill")
-                Text("\(record.score)")
-                Spacer()
-                Text(record.date)
+        List{
+            ForEach (recordList.records.indices) { index in
+                HStack {
+                    Image(systemName: "star.circle.fill").foregroundColor(self.recordList.championIndex == index ? .red : nil)
+                    Text("\(self.recordList.records[index].score)")
+                    Text("(\(self.recordList.records[index].level))").opacity(0.90)
+                    Spacer()
+                    Text(self.recordList.records[index].date)
+                }
             }
         }.navigationBarTitle(Text("Record List"))
     }
@@ -26,6 +28,6 @@ struct RecordView: View {
 
 struct RecordView_Previews: PreviewProvider {
     static var previews: some View {
-        RecordView()
+        RecordView().environmentObject(RecordList.shared)
     }
 }

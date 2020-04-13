@@ -22,13 +22,17 @@ struct ChalkSevenView: View {
         NavigationView {
             VStack {
                HStack {
-                   NavigationLink(destination: RecordView()) {
+                NavigationLink(destination: RecordView().environmentObject(RecordList.shared)) {
                        Image(systemName: "doc.plaintext")
                            .imageScale(.large)
                    }.offset(x: 3 * ballEdge)
                }
                Spacer()
-               Text("Score:\(self.chessboard.score)").font(Font.system(size: 60))
+                VStack(alignment: .leading) {
+                    Text("Score:\(self.chessboard.score)").font(Font.system(size: 60))
+                    Text("Level:\(self.chessboard.level)").font(Font.system(size: 20)).opacity(0.95)
+                }
+               
                ZStack(alignment: .center) {
                    BackGrid(columnTap: { column in
                        self.newBallOffsetX = CGFloat((column - 3)) * ballEdge
@@ -73,7 +77,7 @@ struct ChalkSevenView: View {
                .alert(isPresented: .init(get: {self.chessboard.gameOver}, set: {self.chessboard.gameOver = $0 })) {
                    Alert(title: Text("Game Over"), message: Text("Try again?"), dismissButton: .default(Text("Yes"), action: {
                        withAnimation(.easeInOut) {
-                        RecordList.shared.createNewRecord(score: self.chessboard.score)
+                        RecordList.shared.createNewRecord(score: self.chessboard.score, level: self.chessboard.level)
                            self.chessboard.createChessBoard()
                        }
                    }))
