@@ -11,8 +11,6 @@ import SwiftUI
 
 struct Ball:View {
     @EnvironmentObject var ball: BallModel
-//    @State var scale: CGFloat = 1.0
-//    @State var opacity: Double = 1.0
     
     var body: some View {
         Circle()
@@ -33,20 +31,17 @@ struct Ball:View {
 
     
     func ballText() -> String {
-//        withAnimation{
-            switch self.ball.state {
-            case .number:
-                return String(self.ball.num.rawValue)
-            case .solid:
-                return "?"
-            case .breaking:
-                return "b"
-            case .null:
-                return ""
-            }
+        switch self.ball.state {
+        case .number:
+            return String(self.ball.num.rawValue)
+        case .solid:
+            return "S"
+        case .breaking:
+            return "?"
+        case .null:
+            return ""
+        }
     }
-        
-//    }
 }
 
 struct BackGrid: View {
@@ -74,14 +69,15 @@ struct BackGrid: View {
                         .foregroundColor(self.backgrid.currentColumn == column ? Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5) : .clear)
                         .frame(width:ballEdge,height: 7 * ballEdge)
                         .animation(.spring())
-                        .onTapGesture {
-                            print("tap column:\(column)")
-                            self.columnTap(column)
-                            self.backgrid.currentColumn = column
-                            DispatchQueue.main.asyncAfter(deadline: .now() + dropDuration) {
-                                self.backgrid.currentColumn = 7
-                            }
-                    }
+                        .simultaneousGesture(TapGesture(count: 1)
+                            .onEnded {
+                                print("tap column:\(column)")
+                                self.columnTap(column)
+                                self.backgrid.currentColumn = column
+                                DispatchQueue.main.asyncAfter(deadline: .now() + dropDuration) {
+                                    self.backgrid.currentColumn = 7
+                                }
+                        })
                 }
             }
         }
@@ -107,10 +103,12 @@ struct ChalkSevenView: View {
     @State var newBallOffsetX: CGFloat = 0.0
     @State var lastNewBallOffsetX: CGFloat = 0.0
     @State var newBallOffsetY: CGFloat = newBallDefaultY
+    
     var backgrid = BackGridModel()
     
     var body: some View {
         VStack {
+            Spacer()
             Text("score:\(self.chessboard.score)").font(Font.system(size: 60))
             ZStack(alignment: .center) {
                 BackGrid(columnTap: { column in
@@ -127,13 +125,23 @@ struct ChalkSevenView: View {
                                 Ball().environmentObject(self.chessboard[row, column])
                                 .allowsHitTesting(false)
                             }
-                        }
+                        }.allowsHitTesting(false)
                     }
                 }.allowsHitTesting(false)
                     .animation(.spring())
                 Ball().environmentObject(self.chessboard.newBall).offset(x: self.newBallOffsetX ,y: self.newBallOffsetY)
             }.padding(.top, 100)
-            .gesture(DragGesture().onChanged{ gesture in
+            
+            HStack {
+                Spacer()
+                ForEach(self.chessboard.chalkStack.chalks, id: \.id) {chalk in
+                    ChalkView().environmentObject(chalk)
+                }
+                Spacer()
+            }.padding(.top, 40)
+            Spacer()
+        }
+        .simultaneousGesture(DragGesture().onChanged{ gesture in
                 let moveX = gesture.translation.width * 1.5 + self.lastNewBallOffsetX
                 if abs(moveX) <= 3 * ballEdge {
                     self.moveNewBall(moveX)
@@ -143,14 +151,13 @@ struct ChalkSevenView: View {
                 self.moveNewBall(self.newBallOffsetX)
                 self.lastNewBallOffsetX = self.newBallOffsetX
         })
-            HStack {
-                ForEach(self.chessboard.chalkStack.chalks, id: \.id) {chalk in
-                    ChalkView().environmentObject(chalk)
-                }
-            }.padding(.top, 40)
-            
-        }
-            
+            .alert(isPresented: .init(get: {self.chessboard.gameOver}, set: {self.chessboard.gameOver = $0 })) {
+                Alert(title: Text("Game Over"), message: Text("Try again?"), dismissButton: .default(Text("Yes"), action: {
+                    withAnimation(.easeInOut) {
+                        self.chessboard.createChessBoard()
+                    }
+                }))
+            }
         
     }
     

@@ -38,24 +38,19 @@ class BallModel: ObservableObject, Identifiable {
     var num : BallNumber = .three
     {
         willSet {
-//            DispatchQueue.main.async { [weak self] in
-                self.objectWillChange.send()
-//            }
+            self.objectWillChange.send()
         }
     }
     
     var state : BallState = .number
     {
         willSet {
-//            DispatchQueue.main.async { [weak self] in
-                if newValue == .null {
-                        self.opacity = 0
-                } else {
-                    self.opacity = 1
-                }
-                    self.objectWillChange.send()
-                
-//            }
+            if newValue == .null {
+                self.opacity = 0
+            } else {
+                self.opacity = 1
+            }
+            self.objectWillChange.send()
         }
     }
     
@@ -134,7 +129,7 @@ enum BallState: CaseIterable {
     case null, number , solid, breaking
     
     static func random <G: RandomNumberGenerator>(using generator: inout G) -> BallState {
-        return [.null,.number].randomElement(using: &generator) ?? .null
+        return [.null,.null,.number,.number,.number,.solid,.breaking].randomElement(using: &generator) ?? .null
     }
 
     static func random() -> BallState {
@@ -148,8 +143,10 @@ class Chalk: ObservableObject,Identifiable {
     @Published var unused : Bool = true
 }
 
+let chalkStackCount = 20
+
 class ChalkStack: ObservableObject {
-    var totalCount:Int = 20
+    var totalCount:Int = chalkStackCount
     var stackEmpty: () -> Void = {}
     @Published var chalks = [Chalk]()
     @Published var currentChalk: Int = 0
@@ -163,7 +160,7 @@ class ChalkStack: ObservableObject {
     }
     
     convenience init() {
-        self.init(totalCount: 20)
+        self.init(totalCount: chalkStackCount)
     }
     
     func indexIsValid(index:Int) -> Bool {
@@ -203,6 +200,14 @@ class Chessboard: ObservableObject {
     
     private var needBang:Bool = false
     private var scoreTime:Int = 1
+    private var shouldRowUp: Bool = false
+    
+    var gameOver:Bool = false
+    {
+        willSet {
+            self.objectWillChange.send()
+        }
+    }
     
     var chalkStack: ChalkStack = ChalkStack()
     {
@@ -215,30 +220,24 @@ class Chessboard: ObservableObject {
     var grid: [BallModel] = [BallModel]()
     {
         willSet {
-//            DispatchQueue.main.async { [weak self] in
-                self.objectWillChange.send()
-//            }
+            self.objectWillChange.send()
         }
     }
     
     var operating:Bool = false
     {
         willSet {
-//            DispatchQueue.main.async { [weak self] in
-                self.objectWillChange.send()
-//            }
+            self.objectWillChange.send()
         }
     }
     
     var score:Int = 0
     {
         willSet {
-//            DispatchQueue.main.async { [weak self] in
-                self.objectWillChange.send()
-//            }
+            self.objectWillChange.send()
         }
     }
-    //@Published var ballMatrix:[[BallModel]] = [[BallModel]]() //= Array(repeating: Array(repeating: BallModel(), count: 7), count: 7)
+
     
     
    var newBall = BallModel(num: BallNumber.random())
@@ -250,19 +249,54 @@ class Chessboard: ObservableObject {
     
     
     init() {
+        self.createChessBoard()
+        self.chalkStack.stackEmpty = {[weak self] in
+            self?.shouldRowUp = true
+        }
+    }
+    
+    func createChessBoard() {
         self.grid = self.randomGrid()
+        print("init grid:\(self.grid)")
         self.collapse()
-        self.initChess()
-        self.chalkStack.stackEmpty = rowUp
+        self.prepareToStart()
+        self.operating = false
     }
     
     func rowUp() {
-        
+        withAnimation(.linear) {
+            for column in 0...columns - 1 {
+                if self.singleColumnRowUp(column) == true {
+                    self.gameOver = true
+                }
+            }
+            self.shouldRowUp = false
+        }
+        if !self.gameOver {
+            self.operationChess()
+        }
     }
     
-    func initChess() {
+    func singleColumnRowUp(_ column: Int) -> Bool {
+        var outOfRange = false
+        let singleColumnBalls = self.singleColumn(column: column)
+        if singleColumnBalls[0].state == .number {
+            outOfRange = true
+        }
+        
+        for i in 0...rows - 2 {
+            singleColumnBalls[i].copyNewBall(singleColumnBalls[i + 1])
+        }
+        
+        singleColumnBalls[rows - 1].state = .solid
+        
+        return outOfRange
+    }
+    
+    func prepareToStart() {
         self.checkChessBoard()
         while needBang {
+            self.checkSolidBall()
             self.bang()
             self.collapse()
             self.checkChessBoard()
@@ -275,25 +309,34 @@ class Chessboard: ObservableObject {
         if needBang {
             self.operationBang()
         } else {
-            self.operating = false
+            if self.shouldRowUp {
+                self.rowUp()
+            } else {
+                self.operating = false
+            }
         }
     }
     
     func operationBang() {
         self.operating = true
+        self.checkSolidBallWithAnimation()
         self.bangWithAnimation()
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { [weak self] in
             guard (self != nil) else {
                 return
             }
-//            self!.objectWillChange.send()
+
             self!.checkChessBoard()
             if self!.needBang {
                 self!.scoreTime += 1
                 self!.operationBang()
             } else {
-                self!.operating = false
+                if self!.shouldRowUp {
+                    self!.rowUp()
+                }else {
+                    self!.operating = false
+                }
                 self!.scoreTime = 1
             }
         }
@@ -363,6 +406,49 @@ class Chessboard: ObservableObject {
     }
     
     
+    func checkSolidBall() {
+        let shouldBangIndexArray = self.grid.indices.filter{ self.grid[$0].shouldBang == true }
+        for index in shouldBangIndexArray {
+            //above
+            if index >= columns {
+                let aboveIndex = index - columns
+                self.changeSolidBall(index: aboveIndex)
+            }
+            //blow
+            if index < columns * (rows - 1) {
+                let blowIndex = index + columns
+                self.changeSolidBall(index: blowIndex)
+            }
+            //left
+            if index % rows != 0 {
+                let leftIndex = index - 1
+                self.changeSolidBall(index: leftIndex)
+            }
+            
+            //right
+            if index % rows != columns - 1 {
+                let rightIndex = index + 1
+                self.changeSolidBall(index: rightIndex)
+            }
+        }
+        print("checkedSolid:\(self.grid)")
+    }
+    
+    func changeSolidBall(index: Int) {
+        if self.grid[index].state == .solid {
+            self.grid[index].state = .breaking
+        } else if self.grid[index].state == .breaking {
+            self.grid[index].num = BallNumber.random()
+            self.grid[index].state = .number
+        }
+    }
+    
+    func checkSolidBallWithAnimation() {
+        withAnimation(Animation.easeOut) {
+            self.checkSolidBall()
+        }
+    }
+    
     func collapse() {
         for column in 0...(columns - 1) {
             self.collapseSingleColumn(column)
@@ -377,33 +463,17 @@ class Chessboard: ObservableObject {
     
     func collapseSingleColumn(_ column: Int) {
         
-//        for i in (0...(rows - 2)).reversed() {
-//            for j in (0...(rows - i - 2)).reversed() {
-//                if self[j, column].state != .null {
-////                    let temp = self[j,column]
-////                    self[j,column] = self[j+1,column]
-////                    self[j+1,column] = temp
-//                    let temp = BallModel()
-//                    temp.copyNewBall(self[j,column])
-//                    self[j,column].copyNewBall(self[j+1,column])
-//                    self[j+1,column].copyNewBall(temp)
-//                }
-//            }
-//        }
-        
         let singleColumnArray = self.singleColumn(column: column)
-        let numberArray = singleColumnArray.filter{$0.state == .number}
-        let numberIndexArray = singleColumnArray.indices.filter{singleColumnArray[$0].state == .number}
+        let numberArray = singleColumnArray.filter{$0.state != .null}
+        let numberIndexArray = singleColumnArray.indices.filter{singleColumnArray[$0].state != .null}
         for i in 0...(rows - 1) {
             let numCount = numberArray.count
             if numberArray.count > i {
                 let numberIndex = numCount - i - 1
                 let rowIndex = rows - i - 1
-//                DispatchQueue.main.async {
                     withAnimation(Animation.linear(duration: 0.4)) {
                          numberArray[numberIndex].dropOffset = ballEdge * CGFloat((rowIndex - numberIndexArray[numberIndex]))
                     }
-//                }
                 self[rowIndex,column].copyNewBall(numberArray[numberIndex])
             } else {
                 self[rows - i - 1, column].state = .null
@@ -414,9 +484,7 @@ class Chessboard: ObservableObject {
     func checkChessBoard() {
         self.allColumnCheck()
         self.allRowCheck()
-        for item in self.grid {
-            print(item)
-        }
+        print("checkedBang:\(self.grid)")
     }
     
     func allColumnCheck() {
@@ -514,6 +582,8 @@ class Chessboard: ObservableObject {
             }
             print("drop row:\(rows - numCount - 1)")
             return CGFloat((rows - numCount + 1)) * ballEdge
+        } else {
+            self.operating = false
         }
         return 0;
     }
