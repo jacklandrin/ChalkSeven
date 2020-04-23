@@ -20,7 +20,7 @@ struct Ball:View {
                     .foregroundColor(.white)
             }
         )
-            .foregroundColor(.blue)
+            .foregroundColor(ballColor())
             .frame(width:ballEdge, height:ballEdge)
             .opacity(self.ball.opacity)
             .scaleEffect(self.ball.ballScale)
@@ -39,6 +39,29 @@ struct Ball:View {
             return "?"
         case .null:
             return ""
+        }
+    }
+    
+    func ballColor() -> Color {
+        if self.ball.state == .number {
+            switch self.ball.num {
+            case .one:
+                return .orange
+            case .two:
+                return .green
+            case .three:
+                return .yellow
+            case .four:
+                return .pink
+            case .five:
+                return .blue
+            case .six:
+                return .purple
+            case .seven:
+                return .red
+            }
+        } else {
+            return .gray
         }
     }
 }
