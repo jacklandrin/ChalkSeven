@@ -104,6 +104,7 @@ extension BallModel {
     
     func generateNewBall() {
         self.num = BallNumber.random()
+        self.state = BallState.randomNewBall()
     }
 }
 
@@ -135,10 +136,19 @@ enum BallState: CaseIterable {
     static func random <G: RandomNumberGenerator>(using generator: inout G) -> BallState {
         return [.null,.null,.number,.number,.number,.solid,.breaking].randomElement(using: &generator) ?? .null
     }
-
+    
+    static func randomNewBall <G: RandomNumberGenerator>(using generator: inout G) -> BallState {
+        return [.number,.number,.number,.solid].randomElement(using: &generator) ?? .null
+    }
+    
     static func random() -> BallState {
         var g = SystemRandomNumberGenerator()
         return BallState.random(using: &g)
+    }
+    
+    static func randomNewBall() -> BallState {
+        var g = SystemRandomNumberGenerator()
+        return BallState.randomNewBall(using: &g)
     }
 }
 

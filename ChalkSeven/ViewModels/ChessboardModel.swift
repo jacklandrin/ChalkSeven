@@ -228,9 +228,9 @@ class Chessboard: ObservableObject {
         return  (column + 3, CGFloat(column) * ballEdge)
     }
     
-    func generateNewBall() {
-        self.newBall = BallModel(num: BallNumber.random())
-    }
+//    func generateNewBall() {
+//        self.newBall = BallModel(num: BallNumber.random(), state: BallState.randomNewBall())
+//    }
     
     
     func checkSolidBall() {
