@@ -21,13 +21,6 @@ struct ChalkSevenView: View {
     var body: some View {
         NavigationView {
             VStack {
-               HStack {
-                NavigationLink(destination: RecordView().environmentObject(RecordList.shared)) {
-                       Image(systemName: "doc.plaintext")
-                           .imageScale(.large)
-                   }.offset(x: 3 * ballEdge)
-               }
-               Spacer()
                 VStack(alignment: .leading) {
                     Text("Score:\(self.chessboard.score)").font(Font.system(size: 60))
                     Text("Level:\(self.chessboard.level)").font(Font.system(size: 20)).opacity(0.95)
@@ -82,9 +75,15 @@ struct ChalkSevenView: View {
                        }
                    }))
                }
+            .navigationBarItems(trailing:
+                HStack {
+                    NavigationLink(destination: RecordView().environmentObject(RecordList.shared)) {
+                                   Image(systemName: "doc.plaintext")
+                                       .imageScale(.large)
+                               }
+            })
         }.navigationViewStyle(StackNavigationViewStyle())
         .navigationBarHidden(true)
-       
         
     }
     
