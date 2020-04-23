@@ -7,7 +7,7 @@ In every level, you have 20 opportunities to drop balls. When you finish your al
 
 Have fun!
 
-![](http://www.jacklandrin.com/wp-content/uploads/2020/04/chalk7_screenshot.jpeg)
+![](http://www.jacklandrin.com/wp-content/uploads/2020/04/chalkball_demo.png)
 
 The git address is <https://github.com/jacklandrin/ChalkSeven>
 ## Requirement
