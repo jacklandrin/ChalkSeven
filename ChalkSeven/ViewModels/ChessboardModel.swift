@@ -17,8 +17,14 @@ class Chessboard: ObservableObject {
     var objectWillChange = ObservableObjectPublisher()
     
     private var needBang:Bool = false
-    private var scoreTime:Int = 1
     private var shouldRowUp: Bool = false
+    
+    var scoreTime:Int = 1
+    {
+        willSet {
+            self.objectWillChange.send()
+        }
+    }
     
     var gameOver:Bool = false
     {
@@ -156,7 +162,9 @@ class Chessboard: ObservableObject {
 
             self!.checkChessBoard()
             if self!.needBang {
-                self!.scoreTime += 1
+                withAnimation(.spring()) {
+                     self!.scoreTime += 1
+                }
                 self!.operationBang()
             } else {
                 if self!.shouldRowUp {
@@ -164,7 +172,10 @@ class Chessboard: ObservableObject {
                 }else {
                     self!.operating = false
                 }
-                self!.scoreTime = 1
+                withAnimation(.spring()) {
+                    self!.scoreTime = 1
+                }
+                    
             }
         }
 

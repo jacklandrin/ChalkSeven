@@ -15,6 +15,7 @@ struct ChalkSevenView: View {
     @State var newBallOffsetX: CGFloat = 0.0
     @State var lastNewBallOffsetX: CGFloat = 0.0
     @State var newBallOffsetY: CGFloat = newBallDefaultY
+    let transitionEffect = AnyTransition.slide.combined(with: .opacity)
     
     var backgrid = BackGridModel()
     
@@ -31,6 +32,7 @@ struct ChalkSevenView: View {
                             .font(Font.custom("Eraser Dust",size: 24)).opacity(0.95).foregroundColor(.white)
                         )
                     }
+                    
                 }
                
                ZStack(alignment: .center) {
@@ -55,6 +57,16 @@ struct ChalkSevenView: View {
                    }.allowsHitTesting(false)
                        .animation(.spring())
                    Ball().environmentObject(self.chessboard.newBall).offset(x: self.newBallOffsetX ,y: self.newBallOffsetY)
+                
+            if self.chessboard.scoreTime != 1 {
+                Text("Chain X \(self.chessboard.scoreTime)").font(Font.custom("Eraser Dust",size: 24 + 0.2 * CGFloat(self.chessboard.scoreTime)))
+                    .opacity(0.95)
+                    .transition(transitionEffect)
+                    .foregroundColor(.yellow)
+                    .offset(y:newBallDefaultY - 50)
+                    .animation(.easeInOut)
+            }
+                
                }.padding(.top, 100)
                 
                Spacer()
