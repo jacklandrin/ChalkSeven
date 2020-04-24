@@ -16,6 +16,7 @@
 		CC1673BA2441F8D6002B8CAB /* ChalkSevenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1673B92441F8D6002B8CAB /* ChalkSevenTests.swift */; };
 		CC1673C52441F8D6002B8CAB /* ChalkSevenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1673C42441F8D6002B8CAB /* ChalkSevenUITests.swift */; };
 		CC1673D3244203D7002B8CAB /* BallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1673D2244203D7002B8CAB /* BallViewModel.swift */; };
+		CCF7E5D82452A7E30092BCA2 /* Eraser Dust.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCF7E5D62452A7E30092BCA2 /* Eraser Dust.ttf */; };
 		CCFDAB1E2444B1AF00C4A228 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDAB1D2444B1AF00C4A228 /* RecordView.swift */; };
 		CCFDAB222444B5CF00C4A228 /* RecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDAB212444B5CF00C4A228 /* RecordModel.swift */; };
 		CCFDAB242444B5F700C4A228 /* ChessboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDAB232444B5F700C4A228 /* ChessboardModel.swift */; };
@@ -58,6 +59,7 @@
 		CC1673C42441F8D6002B8CAB /* ChalkSevenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChalkSevenUITests.swift; sourceTree = "<group>"; };
 		CC1673C62441F8D6002B8CAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC1673D2244203D7002B8CAB /* BallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallViewModel.swift; sourceTree = "<group>"; };
+		CCF7E5D62452A7E30092BCA2 /* Eraser Dust.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Eraser Dust.ttf"; sourceTree = "<group>"; };
 		CCFDAB1D2444B1AF00C4A228 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		CCFDAB212444B5CF00C4A228 /* RecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordModel.swift; sourceTree = "<group>"; };
 		CCFDAB232444B5F700C4A228 /* ChessboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChessboardModel.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 		CC1673A12441F8D3002B8CAB /* ChalkSeven */ = {
 			isa = PBXGroup;
 			children = (
+				CCF7E5D52452A7E30092BCA2 /* Eraser Dust */,
 				CCFDAB202444B59D00C4A228 /* ViewModels */,
 				CCFDAB1F2444B58900C4A228 /* Views */,
 				CC1673A22441F8D3002B8CAB /* AppDelegate.swift */,
@@ -151,6 +154,14 @@
 				CC1673C62441F8D6002B8CAB /* Info.plist */,
 			);
 			path = ChalkSevenUITests;
+			sourceTree = "<group>";
+		};
+		CCF7E5D52452A7E30092BCA2 /* Eraser Dust */ = {
+			isa = PBXGroup;
+			children = (
+				CCF7E5D62452A7E30092BCA2 /* Eraser Dust.ttf */,
+			);
+			path = "Eraser Dust";
 			sourceTree = "<group>";
 		};
 		CCFDAB1F2444B58900C4A228 /* Views */ = {
@@ -281,6 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CC1673AF2441F8D6002B8CAB /* LaunchScreen.storyboard in Resources */,
+				CCF7E5D82452A7E30092BCA2 /* Eraser Dust.ttf in Resources */,
 				CC1673AC2441F8D6002B8CAB /* Preview Assets.xcassets in Resources */,
 				CC1673A92441F8D6002B8CAB /* Assets.xcassets in Resources */,
 			);

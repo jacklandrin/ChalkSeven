@@ -21,9 +21,16 @@ struct ChalkSevenView: View {
     var body: some View {
         NavigationView {
             VStack {
-                VStack(alignment: .leading) {
-                    Text("Score:\(self.chessboard.score)").font(Font.system(size: 60))
-                    Text("Level:\(self.chessboard.level)").font(Font.system(size: 20)).opacity(0.95)
+                Spacer().frame(height:40)
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Score:\(self.chessboard.score)").font(Font.custom("Eraser Dust", size: 60)).foregroundColor(.white)
+                    HStack{
+                        Text("Level:").font(Font.custom("Eraser Dust",size: 24)).opacity(0.95).foregroundColor(.white)
+                        Image("level_bg").overlay(
+                            Text("\(self.chessboard.level)")
+                            .font(Font.custom("Eraser Dust",size: 24)).opacity(0.95).foregroundColor(.white)
+                        )
+                    }
                 }
                
                ZStack(alignment: .center) {
@@ -34,12 +41,14 @@ struct ChalkSevenView: View {
                    }).environmentObject(backgrid)
                        .frame(width:ballEdge * 7, height: ballEdge * 7)
                    .disabled(self.chessboard.operating)
+                    .padding(35)
+                
                    VStack(spacing:0) {
                        ForEach (0...6, id: \.self) { row in
                                HStack(spacing:0) {
                                ForEach (0...6, id: \.self) { column in
                                    Ball().environmentObject(self.chessboard[row, column])
-                                   .allowsHitTesting(false)
+                                    .allowsHitTesting(false)
                                }
                            }.allowsHitTesting(false)
                        }
@@ -47,21 +56,22 @@ struct ChalkSevenView: View {
                        .animation(.spring())
                    Ball().environmentObject(self.chessboard.newBall).offset(x: self.newBallOffsetX ,y: self.newBallOffsetY)
                }.padding(.top, 100)
-               
-               HStack {
-                   Spacer()
+                
+               Spacer()
+                
+                HStack(spacing: -20) {
                    ForEach(self.chessboard.chalkStack.chalks, id: \.id) {chalk in
                        ChalkView().environmentObject(chalk)
                    }
-                   Spacer()
-               }.padding(.top, 40)
-               Spacer()
+                }.padding(.bottom, 18).offset(x:-40)
            }
-           .simultaneousGesture(DragGesture().onChanged{ gesture in
+                .contentShape(Rectangle()) // gesture zone
+           .highPriorityGesture(DragGesture().onChanged{ gesture in
                    let moveX = gesture.translation.width * 1.5 + self.lastNewBallOffsetX
                    if abs(moveX) <= 3 * ballEdge {
                        self.moveNewBall(moveX)
                    }
+//                   print("moveX:\(moveX)")
                }
                .onEnded{ _ in
                    self.moveNewBall(self.newBallOffsetX)
@@ -82,8 +92,11 @@ struct ChalkSevenView: View {
                                        .imageScale(.large)
                                }
             })
+            .background(Image("chalkball_bg").resizable().disabled(true))
+            
         }.navigationViewStyle(StackNavigationViewStyle())
         .navigationBarHidden(true)
+        
         
     }
     

@@ -228,10 +228,6 @@ class Chessboard: ObservableObject {
         return  (column + 3, CGFloat(column) * ballEdge)
     }
     
-//    func generateNewBall() {
-//        self.newBall = BallModel(num: BallNumber.random(), state: BallState.randomNewBall())
-//    }
-    
     
     func checkSolidBall() {
         let shouldBangIndexArray = self.grid.indices.filter{ self.grid[$0].shouldBang == true }
@@ -399,7 +395,6 @@ class Chessboard: ObservableObject {
             withAnimation(Animation.linear.delay(0.6)) {
                 self.chalkStack.useChalk()
                 self[rows - numCount - 1, column].copyNewBall(self.newBall)
-                
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + dropDuration + 0.2) { [weak self] in

@@ -15,16 +15,19 @@ struct Ball:View {
         Circle()
         .overlay(
             ZStack {
-                Circle().stroke(Color.black, lineWidth:1)
-                Text(ballText()).font(Font.system(size: 38))
+//                Circle().stroke(Color.black, lineWidth:1)
+                Image("ball_stroke").resizable().padding(-3)
+                Text(ballText()).font(Font.custom("Eraser Dust", size: 40))
                     .foregroundColor(.white)
-            }
+                    .opacity(0.95)
+            }.padding(2)
         )
             .foregroundColor(ballColor())
             .frame(width:ballEdge, height:ballEdge)
             .opacity(self.ball.opacity)
             .scaleEffect(self.ball.ballScale)
             .offset(y: self.ball.dropOffset)
+            .opacity(0.90)
     }
     
 

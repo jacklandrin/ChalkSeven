@@ -11,12 +11,9 @@ import SwiftUI
 struct ChalkView:View {
     @EnvironmentObject var chalk : Chalk
     var body: some View {
-        Circle().overlay(
-            Circle()
-                .stroke(Color.orange,lineWidth: 2)
-        )
-            .foregroundColor(self.chalk.unused ? .orange : .clear)
-            .frame(width:10, height: 10)
+        Image("chalk")
+            .opacity(self.chalk.unused ? 1 : 0)
+            .frame(width:33, height: 15)
     }
 }
 

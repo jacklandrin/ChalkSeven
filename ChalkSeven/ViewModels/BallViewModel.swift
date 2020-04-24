@@ -10,7 +10,7 @@ import Foundation
 import Combine
 import SwiftUI
 
-let ballEdge: CGFloat = 50.0
+let ballEdge: CGFloat = 44.0
 let newBallDefaultY: CGFloat = -(5 * ballEdge)
 let dropDuration = 0.4
 let basicScore = 7
@@ -138,7 +138,7 @@ enum BallState: CaseIterable {
     }
     
     static func randomNewBall <G: RandomNumberGenerator>(using generator: inout G) -> BallState {
-        return [.number,.number,.number,.solid].randomElement(using: &generator) ?? .null
+        return [.number,.number,.number,.number,.solid].randomElement(using: &generator) ?? .null
     }
     
     static func random() -> BallState {

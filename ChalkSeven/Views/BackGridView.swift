@@ -18,7 +18,7 @@ struct BackGrid: View {
             VStack(spacing:0) {
                 ForEach (0...6, id: \.self) { row in
                     Rectangle().overlay(
-                        Rectangle().stroke(Color.yellow, lineWidth: 1)
+                        Rectangle().stroke(Color.yellow, lineWidth: 2)
                     )
                         .foregroundColor(self.backgrid.currentRow == row ? .gray : .clear)
                         .frame(width:7 * ballEdge, height: ballEdge)
@@ -28,11 +28,12 @@ struct BackGrid: View {
             HStack(spacing:0) {
                 ForEach(0...6, id: \.self) { column in
                     Rectangle().overlay(
-                        Rectangle().stroke(Color.yellow, lineWidth: 1)
+                        Rectangle().stroke(Color.yellow, lineWidth: 1).opacity(0.9)
                     )
                         .foregroundColor(self.backgrid.currentColumn == column ? Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5) : .clear)
                         .frame(width:ballEdge,height: 7 * ballEdge)
                         .animation(.spring())
+                    .contentShape(Rectangle())
                         .simultaneousGesture(TapGesture(count: 1)
                             .onEnded {
                                 print("tap column:\(column)")
