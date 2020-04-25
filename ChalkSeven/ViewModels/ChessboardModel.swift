@@ -76,51 +76,86 @@ class Chessboard: ObservableObject {
         willSet {
             objectWillChange.send()
         }
+   }
+    
+    var outRangeBalls = [BallModel]()
+    {
+        willSet {
+            objectWillChange.send()
+        }
     }
     
-    
     init() {
+        self.outRangeBalls = self.initOutRangeBalls()
         self.createChessBoard()
         self.chalkStack.stackEmpty = {[weak self] in
             self?.shouldRowUp = true
         }
     }
     
+    
+    /// initialize the chessboard
     func createChessBoard() {
         self.level = 1
         self.grid = self.randomGrid()
+        self.cleanOutRangeBalls()
         print("init grid:\(self.grid)")
         self.collapse()
         self.prepareToStart()
         self.operating = false
     }
     
-    func rowUp() {
-        withAnimation(.linear) {
-            for column in 0...columns - 1 {
-                if self.singleColumnRowUp(column) == true {
-                    self.gameOver = true
-                }
+    func initOutRangeBalls() -> [BallModel]{
+        var outRangeBallsTemp = Array(repeating: BallModel(num: .one, state: .null), count: columns)
+        for index in 0..<columns {
+            let item = BallModel(num: .one, state: .null)
+            item.opacity = 0
+            outRangeBallsTemp[index] = item
+        }
+        return outRangeBallsTemp
+    }
+    
+    func cleanOutRangeBalls() {
+        for item in self.outRangeBalls {
+            item.state = .null
+        }
+    }
+    
+    func rowUp() -> Bool {
+        var detectOutRange = false
+        
+        for column in 0...columns - 1 {
+            if self.singleColumnRowUp(column) == true {
+                detectOutRange = true
             }
-            self.shouldRowUp = false
         }
-        if !self.gameOver {
+        print("detectOutRange\(detectOutRange)")
+        self.shouldRowUp = false
+        if !detectOutRange {
             self.level += 1
-            self.operationChess()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.operationChess()
+            }
+        } else {
+             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.gameOver = true
+            }
         }
+        return detectOutRange
     }
     
     func singleColumnRowUp(_ column: Int) -> Bool {
         var outOfRange = false
         let singleColumnBalls = self.singleColumn(column: column)
-        if singleColumnBalls[0].state == .number {
+        if singleColumnBalls[0].state != .null {
             outOfRange = true
         }
-        
-        for i in 0...rows - 2 {
-            singleColumnBalls[i].copyNewBall(singleColumnBalls[i + 1])
-        }
-        
+//        withAnimation(.linear) {
+            self.outRangeBalls[column].copyNewBall(singleColumnBalls[0])
+            for i in 0...rows - 2 {
+                singleColumnBalls[i].copyNewBall(singleColumnBalls[i + 1])
+            }
+//        }
         singleColumnBalls[rows - 1].state = .solid
         
         return outOfRange
@@ -143,7 +178,9 @@ class Chessboard: ObservableObject {
             self.operationBang()
         } else {
             if self.shouldRowUp {
-                self.rowUp()
+                if self.rowUp() == true {
+                    return
+                }
             } else {
                 self.operating = false
             }
@@ -166,11 +203,14 @@ class Chessboard: ObservableObject {
                      self!.scoreTime += 1
                 }
                 self!.operationBang()
-            } else {
+            } else { // banging ends
                 if self!.shouldRowUp {
-                    self!.rowUp()
+                    if self!.rowUp() == true {
+                        return
+                    }
                 }else {
                     self!.operating = false
+                    self?.checkGridFull()
                 }
                 withAnimation(.spring()) {
                     self!.scoreTime = 1
@@ -181,6 +221,13 @@ class Chessboard: ObservableObject {
 
     }
     
+    func checkGridFull() {
+        let numArray = self.grid.filter{ $0.state != .null }
+        
+        if numArray.count == self.rows * self.columns {
+            self.gameOver = true
+        }
+    }
     
     func randomGrid() -> [BallModel] {
         var grid:[BallModel] = Array(repeating: BallModel(), count: rows * columns)
@@ -403,7 +450,7 @@ class Chessboard: ObservableObject {
         print("dropSingleColumn:\(singleColumnBalls.filter{$0.state == .number})")
         let numCount = singleColumnBalls.filter{$0.state != .null}.count
         if numCount < rows {
-            withAnimation(Animation.linear.delay(0.6)) {
+            withAnimation(Animation.easeOut.delay(0.6)) {
                 self.chalkStack.useChalk()
                 self[rows - numCount - 1, column].copyNewBall(self.newBall)
             }
@@ -417,6 +464,7 @@ class Chessboard: ObservableObject {
             return CGFloat((rows - numCount + 1)) * ballEdge
         } else {
             self.operating = false
+            self.checkGridFull()
         }
         return 0;
     }

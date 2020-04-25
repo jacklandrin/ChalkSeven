@@ -44,11 +44,18 @@ struct ChalkSevenView: View {
                        .frame(width:ballEdge * 7, height: ballEdge * 7)
                    .disabled(self.chessboard.operating)
                     .padding(35)
+                  
+                HStack(spacing:0) {
+                    ForEach (0..<self.chessboard.columns, id: \.self) { column in
+                        Ball().environmentObject(self.chessboard.outRangeBalls[column])
+                           .allowsHitTesting(false)
+                      }
+                }.offset(y:newBallDefaultY + ballEdge)
                 
                    VStack(spacing:0) {
-                       ForEach (0...6, id: \.self) { row in
+                    ForEach (0..<self.chessboard.rows, id: \.self) { row in
                                HStack(spacing:0) {
-                               ForEach (0...6, id: \.self) { column in
+                               ForEach (0..<self.chessboard.columns, id: \.self) { column in
                                    Ball().environmentObject(self.chessboard[row, column])
                                     .allowsHitTesting(false)
                                }
@@ -70,12 +77,16 @@ struct ChalkSevenView: View {
                }.padding(.top, 100)
                 
                Spacer()
-                
+               
                 HStack(spacing: -20) {
-                   ForEach(self.chessboard.chalkStack.chalks, id: \.id) {chalk in
-                       ChalkView().environmentObject(chalk)
+                    ForEach(self.chessboard.chalkStack.chalks.reversed(), id: \.id) {chalk in
+                        ChalkView().environmentObject(chalk).rotationEffect(.degrees(180))
                    }
-                }.padding(.bottom, 18).offset(x:-40)
+                }.rotationEffect(.degrees(180))
+                .padding(.bottom, 16)
+                    .offset(x: -40)
+                
+
            }
                 .contentShape(Rectangle()) // gesture zone
            .highPriorityGesture(DragGesture().onChanged{ gesture in
@@ -96,20 +107,19 @@ struct ChalkSevenView: View {
                            self.chessboard.createChessBoard()
                        }
                    }))
-               }
+            }
             .navigationBarItems(trailing:
                 HStack {
                     NavigationLink(destination: RecordView().environmentObject(RecordList.shared)) {
                                    Image(systemName: "doc.plaintext")
                                        .imageScale(.large)
-                               }
+                    }.contentShape(Rectangle())
             })
             .background(Image("chalkball_bg").resizable().disabled(true))
             
         }.navigationViewStyle(StackNavigationViewStyle())
         .navigationBarHidden(true)
-        
-        
+   
     }
     
     func moveNewBall(_ offsetX:CGFloat) {

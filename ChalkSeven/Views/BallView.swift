@@ -15,7 +15,6 @@ struct Ball:View {
         Circle()
         .overlay(
             ZStack {
-//                Circle().stroke(Color.black, lineWidth:1)
                 Image("ball_stroke").resizable().padding(-3)
                 Text(ballText()).font(Font.custom("Eraser Dust", size: 40))
                     .foregroundColor(.white)

@@ -12,7 +12,7 @@ import SwiftUI
 
 let ballEdge: CGFloat = 44.0
 let newBallDefaultY: CGFloat = -(5 * ballEdge)
-let dropDuration = 0.4
+let dropDuration = 0.3
 let basicScore = 7
 
 class BackGridModel: ObservableObject {
