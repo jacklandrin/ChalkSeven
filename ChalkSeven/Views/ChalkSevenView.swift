@@ -16,6 +16,7 @@ struct ChalkSevenView: View {
     @State var lastNewBallOffsetX: CGFloat = 0.0
     @State var newBallOffsetY: CGFloat = newBallDefaultY
     let transitionEffect = AnyTransition.slide.combined(with: .opacity)
+    let impactFeedback = UIImpactFeedbackGenerator(style: .light)
     
     var backgrid = BackGridModel()
     
@@ -94,7 +95,6 @@ struct ChalkSevenView: View {
                    if abs(moveX) <= 3 * ballEdge {
                        self.moveNewBall(moveX)
                    }
-//                   print("moveX:\(moveX)")
                }
                .onEnded{ _ in
                    self.moveNewBall(self.newBallOffsetX)
@@ -125,6 +125,9 @@ struct ChalkSevenView: View {
     func moveNewBall(_ offsetX:CGFloat) {
         withAnimation(.easeOut) {
             let benchmarkX = self.chessboard.benchmarkX(offsetX: offsetX)
+            if newBallOffsetX != benchmarkX.newX {
+                impactFeedback.impactOccurred()
+            }
             self.newBallOffsetX = benchmarkX.newX
             self.backgrid.currentColumn = benchmarkX.column
             

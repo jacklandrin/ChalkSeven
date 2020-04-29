@@ -19,6 +19,8 @@ class Chessboard: ObservableObject {
     private var needBang:Bool = false
     private var shouldRowUp: Bool = false
     
+    private let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+    
     var scoreTime:Int = 1
     {
         willSet {
@@ -411,6 +413,7 @@ class Chessboard: ObservableObject {
     
     
     func bangWithAnimation() {
+        self.impactFeedback.impactOccurred()
         DispatchQueue.main.async {
             withAnimation(Animation.easeIn(duration: 0.3)) {
                 for item in self.grid {
@@ -428,6 +431,7 @@ class Chessboard: ObservableObject {
                     item.ballScale = 1.0
                 }
             }
+            
             self?.bang()
             self?.collapse()
         }
