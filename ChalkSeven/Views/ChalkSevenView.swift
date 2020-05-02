@@ -15,7 +15,7 @@ struct ChalkSevenView: View {
     @State var newBallOffsetX: CGFloat = 0.0
     @State var lastNewBallOffsetX: CGFloat = 0.0
     @State var newBallOffsetY: CGFloat = newBallDefaultY
-    let transitionEffect = AnyTransition.slide.combined(with: .opacity)
+    let transitionEffect = AnyTransition.slide.combined(with: .opacity).animation(.easeInOut)
     let impactFeedback = UIImpactFeedbackGenerator(style: .light)
     
     var backgrid = BackGridModel()
@@ -67,12 +67,17 @@ struct ChalkSevenView: View {
                    Ball().environmentObject(self.chessboard.newBall).offset(x: self.newBallOffsetX ,y: self.newBallOffsetY)
                 
             if self.chessboard.scoreTime != 1 {
-                Text("Chain X \(self.chessboard.scoreTime)").font(Font.custom("Eraser Dust",size: 24 + 0.2 * CGFloat(self.chessboard.scoreTime)))
+                Text("Chain X \(self.chessboard.scoreTime)")
+                    .animation(nil) // fix text becomes ellipsis first
+                    .font(Font.custom("Eraser Dust",size: 24 + 0.2 * CGFloat(self.chessboard.scoreTime)))
+                    .frame(minWidth: 0, maxWidth: .infinity)
                     .opacity(0.95)
-                    .transition(transitionEffect)
                     .foregroundColor(.yellow)
+                    .transition(transitionEffect)
+                    .fixedSize()
                     .offset(y:newBallDefaultY - 50)
                     .animation(.easeInOut)
+                    
             }
                 
                }.padding(.top, 100)
