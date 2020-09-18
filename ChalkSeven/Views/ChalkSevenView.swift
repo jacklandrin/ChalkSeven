@@ -15,7 +15,7 @@ struct ChalkSevenView: View {
     @State var newBallOffsetX: CGFloat = 0.0
     @State var lastNewBallOffsetX: CGFloat = 0.0
     @State var newBallOffsetY: CGFloat = newBallDefaultY
-    let transitionEffect = AnyTransition.slide.combined(with: .opacity).animation(.easeInOut)
+    
     let impactFeedback = UIImpactFeedbackGenerator(style: .light)
     
     var backgrid = BackGridModel()
@@ -67,16 +67,16 @@ struct ChalkSevenView: View {
                    Ball().environmentObject(self.chessboard.newBall).offset(x: self.newBallOffsetX ,y: self.newBallOffsetY)
                 
             if self.chessboard.scoreTime != 1 {
-                Text("Chain X \(self.chessboard.scoreTime)")
-                    .animation(nil) // fix text becomes ellipsis first
-                    .font(Font.custom("Eraser Dust",size: 24 + 0.2 * CGFloat(self.chessboard.scoreTime)))
-                    .frame(minWidth: 0, maxWidth: .infinity)
-                    .opacity(0.95)
-                    .foregroundColor(.yellow)
-                    .transition(transitionEffect)
-                    .fixedSize()
-                    .offset(y:newBallDefaultY - 50)
-                    .animation(.easeInOut)
+                
+                if #available(iOS 14, *) {
+                    Text("Chain X \(self.chessboard.scoreTime)")
+                        .modifier(ChainModifier(fontSize: CGFloat(self.chessboard.scoreTime)))
+                } else {
+                    Text("Chain X \(self.chessboard.scoreTime)")
+                        .animation(nil) // fix text becomes ellipsis first
+                        .modifier(ChainModifier(fontSize: CGFloat(self.chessboard.scoreTime)))
+                }
+                    
                     
             }
                 
@@ -153,7 +153,21 @@ struct ChalkSevenView: View {
     }
 }
 
-
+struct ChainModifier: ViewModifier {
+    let transitionEffect = AnyTransition.slide.combined(with: .opacity).animation(.easeInOut)
+    let fontSize: CGFloat
+    func body(content: Content) -> some View {
+        content
+            .font(Font.custom("Eraser Dust",size: 24 + 0.2 * fontSize))
+            .frame(minWidth: 0, maxWidth: .infinity)
+            .opacity(0.95)
+            .foregroundColor(.yellow)
+            .fixedSize()
+            .transition(transitionEffect)
+            .offset(y:newBallDefaultY - 50)
+            .animation(.easeInOut)
+    }
+}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
