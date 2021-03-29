@@ -15,6 +15,12 @@ struct ChalkSevenView: View {
     @State var newBallOffsetX: CGFloat = 0.0
     @State var lastNewBallOffsetX: CGFloat = 0.0
     @State var newBallOffsetY: CGFloat = newBallDefaultY
+    @State var muteBGM = false
+    {
+        didSet {
+            muteBGM ? MusicHelper.sharedHelper.stopBackgroundMusic() : MusicHelper.sharedHelper.playBackgroundMusic()
+        }
+    }
     
     let impactFeedback = UIImpactFeedbackGenerator(style: .light)
     
@@ -115,6 +121,13 @@ struct ChalkSevenView: View {
             }
             .navigationBarItems(trailing:
                 HStack {
+                    Button(action:{
+                        muteBGM.toggle()
+                    }) {
+                        Image(systemName: muteBGM ? "speaker.slash" : "speaker.wave.2")
+                            .imageScale(.large)
+                    }
+                    Spacer().frame(width:26)
                     NavigationLink(destination: RecordView().environmentObject(RecordList.shared)) {
                                    Image(systemName: "doc.plaintext")
                                        .imageScale(.large)
@@ -124,7 +137,9 @@ struct ChalkSevenView: View {
             
         }.navigationViewStyle(StackNavigationViewStyle())
         .navigationBarHidden(true)
-   
+        .onAppear{
+            MusicHelper.sharedHelper.playBackgroundMusic()
+        }
     }
     
     func moveNewBall(_ offsetX:CGFloat) {
