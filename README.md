@@ -11,6 +11,12 @@ Have fun!
 ![](http://www.jacklandrin.com/wp-content/uploads/2020/04/chalkball_demo-1.png)
 
 The git address is <https://github.com/jacklandrin/ChalkSeven>
+## References
+Thank Anh, mixkit and freesound for effect sounds. The background music is created by Anh. The other effect sounds come from these sources:
+https://mixkit.co/free-sound-effects/game/?page=2 
+https://freesound.org/people/cameronmusic/sounds/138410/
+https://freesound.org/people/ash_rez/sounds/518887/
+https://freesound.org/people/Mr._Fritz_/sounds/544015/
 ## Requirement
 * iOS 13
 * Swift 5.2
