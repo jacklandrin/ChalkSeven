@@ -18,6 +18,8 @@
 		CC1673D3244203D7002B8CAB /* BallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1673D2244203D7002B8CAB /* BallViewModel.swift */; };
 		CCAE674E2613692200E90E86 /* LobbyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAE674D2613692200E90E86 /* LobbyView.swift */; };
 		CCAE6753261376D300E90E86 /* LobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAE6752261376D300E90E86 /* LobbyViewModel.swift */; };
+		CC6631502612845500E52BC1 /* chalk7.m4a in Resources */ = {isa = PBXBuildFile; fileRef = CC66314F2612845500E52BC1 /* chalk7.m4a */; };
+		CC6631552612846800E52BC1 /* MusicHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6631542612846800E52BC1 /* MusicHelper.swift */; };
 		CCF7E5D82452A7E30092BCA2 /* Eraser Dust.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCF7E5D62452A7E30092BCA2 /* Eraser Dust.ttf */; };
 		CCFDAB1E2444B1AF00C4A228 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDAB1D2444B1AF00C4A228 /* RecordView.swift */; };
 		CCFDAB222444B5CF00C4A228 /* RecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDAB212444B5CF00C4A228 /* RecordModel.swift */; };
@@ -63,6 +65,8 @@
 		CC1673D2244203D7002B8CAB /* BallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallViewModel.swift; sourceTree = "<group>"; };
 		CCAE674D2613692200E90E86 /* LobbyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyView.swift; sourceTree = "<group>"; };
 		CCAE6752261376D300E90E86 /* LobbyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyViewModel.swift; sourceTree = "<group>"; };
+		CC66314F2612845500E52BC1 /* chalk7.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = chalk7.m4a; sourceTree = "<group>"; };
+		CC6631542612846800E52BC1 /* MusicHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MusicHelper.swift; sourceTree = "<group>"; };
 		CCF7E5D62452A7E30092BCA2 /* Eraser Dust.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Eraser Dust.ttf"; sourceTree = "<group>"; };
 		CCFDAB1D2444B1AF00C4A228 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		CCFDAB212444B5CF00C4A228 /* RecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordModel.swift; sourceTree = "<group>"; };
@@ -121,7 +125,7 @@
 		CC1673A12441F8D3002B8CAB /* ChalkSeven */ = {
 			isa = PBXGroup;
 			children = (
-				CCF7E5D52452A7E30092BCA2 /* Eraser Dust */,
+				CC66314B2612843A00E52BC1 /* Resource */,
 				CCFDAB202444B59D00C4A228 /* ViewModels */,
 				CCFDAB1F2444B58900C4A228 /* Views */,
 				CC1673A22441F8D3002B8CAB /* AppDelegate.swift */,
@@ -160,6 +164,15 @@
 			path = ChalkSevenUITests;
 			sourceTree = "<group>";
 		};
+		CC66314B2612843A00E52BC1 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				CC66314F2612845500E52BC1 /* chalk7.m4a */,
+				CCF7E5D52452A7E30092BCA2 /* Eraser Dust */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		CCF7E5D52452A7E30092BCA2 /* Eraser Dust */ = {
 			isa = PBXGroup;
 			children = (
@@ -186,6 +199,7 @@
 			children = (
 				CC1673D2244203D7002B8CAB /* BallViewModel.swift */,
 				CCFDAB212444B5CF00C4A228 /* RecordModel.swift */,
+				CC6631542612846800E52BC1 /* MusicHelper.swift */,
 				CCFDAB232444B5F700C4A228 /* ChessboardModel.swift */,
 				CCFDAB252444BDE300C4A228 /* ChalkStack.swift */,
 				CCAE6752261376D300E90E86 /* LobbyViewModel.swift */,
@@ -297,6 +311,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC6631502612845500E52BC1 /* chalk7.m4a in Resources */,
 				CC1673AF2441F8D6002B8CAB /* LaunchScreen.storyboard in Resources */,
 				CCF7E5D82452A7E30092BCA2 /* Eraser Dust.ttf in Resources */,
 				CC1673AC2441F8D6002B8CAB /* Preview Assets.xcassets in Resources */,
@@ -336,6 +351,7 @@
 				CCFDAB262444BDE300C4A228 /* ChalkStack.swift in Sources */,
 				CCFDAB1E2444B1AF00C4A228 /* RecordView.swift in Sources */,
 				CCFDAB242444B5F700C4A228 /* ChessboardModel.swift in Sources */,
+				CC6631552612846800E52BC1 /* MusicHelper.swift in Sources */,
 				CC1673A72441F8D3002B8CAB /* ChalkSevenView.swift in Sources */,
 				CCFDAB2A2444C03700C4A228 /* BackGridView.swift in Sources */,
 			);

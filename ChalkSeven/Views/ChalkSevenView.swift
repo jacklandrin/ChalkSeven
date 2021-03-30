@@ -15,6 +15,12 @@ struct ChalkSevenView: View {
     @State var newBallOffsetX: CGFloat = 0.0
     @State var lastNewBallOffsetX: CGFloat = 0.0
     @State var newBallOffsetY: CGFloat = newBallDefaultY
+    @State var muteBGM = false
+    {
+        didSet {
+            muteBGM ? MusicHelper.sharedHelper.stopBackgroundMusic() : MusicHelper.sharedHelper.playBackgroundMusic()
+        }
+    }
     
     let impactFeedback = UIImpactFeedbackGenerator(style: .light)
     
@@ -105,23 +111,33 @@ struct ChalkSevenView: View {
                self.moveNewBall(self.newBallOffsetX)
                self.lastNewBallOffsetX = self.newBallOffsetX
        })
-           .alert(isPresented: .init(get: {self.chessboard.gameOver}, set: {self.chessboard.gameOver = $0 })) {
-               Alert(title: Text("Game Over"), message: Text("Try again?"), dismissButton: .default(Text("Yes"), action: {
-                   withAnimation(.easeInOut) {
-                    RecordList.shared.createNewRecord(score: self.chessboard.score, level: self.chessboard.level)
-                       self.chessboard.createChessBoard()
-                   }
-               }))
+       .alert(isPresented: .init(get: {self.chessboard.gameOver}, set: {self.chessboard.gameOver = $0 })) {
+           Alert(title: Text("Game Over"), message: Text("Try again?"), dismissButton: .default(Text("Yes"), action: {
+               withAnimation(.easeInOut) {
+                RecordList.shared.createNewRecord(score: self.chessboard.score, level: self.chessboard.level)
+                   self.chessboard.createChessBoard()
+                    }
+                }
+               ))
         }
         .navigationBarItems(trailing:
             HStack {
+                Button(action:{
+                    muteBGM.toggle()
+                }) {
+                    Image(systemName: muteBGM ? "speaker.slash" : "speaker.wave.2")
+                        .imageScale(.large)
+                }
+                Spacer().frame(width:26)
                 NavigationLink(destination: RecordView().environmentObject(RecordList.shared)) {
                                Image(systemName: "doc.plaintext")
                                    .imageScale(.large)
                 }.contentShape(Rectangle())
         })
         .background(Image("chalkball_bg").resizable().disabled(true))
-
+        .onAppear{
+            MusicHelper.sharedHelper.playBackgroundMusic()
+        }
     }
     
     func moveNewBall(_ offsetX:CGFloat) {
