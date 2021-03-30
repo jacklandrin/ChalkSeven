@@ -16,6 +16,8 @@
 		CC1673BA2441F8D6002B8CAB /* ChalkSevenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1673B92441F8D6002B8CAB /* ChalkSevenTests.swift */; };
 		CC1673C52441F8D6002B8CAB /* ChalkSevenUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1673C42441F8D6002B8CAB /* ChalkSevenUITests.swift */; };
 		CC1673D3244203D7002B8CAB /* BallViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1673D2244203D7002B8CAB /* BallViewModel.swift */; };
+		CCAE674E2613692200E90E86 /* LobbyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAE674D2613692200E90E86 /* LobbyView.swift */; };
+		CCAE6753261376D300E90E86 /* LobbyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCAE6752261376D300E90E86 /* LobbyViewModel.swift */; };
 		CCF7E5D82452A7E30092BCA2 /* Eraser Dust.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCF7E5D62452A7E30092BCA2 /* Eraser Dust.ttf */; };
 		CCFDAB1E2444B1AF00C4A228 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDAB1D2444B1AF00C4A228 /* RecordView.swift */; };
 		CCFDAB222444B5CF00C4A228 /* RecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDAB212444B5CF00C4A228 /* RecordModel.swift */; };
@@ -59,6 +61,8 @@
 		CC1673C42441F8D6002B8CAB /* ChalkSevenUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChalkSevenUITests.swift; sourceTree = "<group>"; };
 		CC1673C62441F8D6002B8CAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CC1673D2244203D7002B8CAB /* BallViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BallViewModel.swift; sourceTree = "<group>"; };
+		CCAE674D2613692200E90E86 /* LobbyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyView.swift; sourceTree = "<group>"; };
+		CCAE6752261376D300E90E86 /* LobbyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyViewModel.swift; sourceTree = "<group>"; };
 		CCF7E5D62452A7E30092BCA2 /* Eraser Dust.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Eraser Dust.ttf"; sourceTree = "<group>"; };
 		CCFDAB1D2444B1AF00C4A228 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		CCFDAB212444B5CF00C4A228 /* RecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordModel.swift; sourceTree = "<group>"; };
@@ -172,6 +176,7 @@
 				CCFDAB272444BF0B00C4A228 /* BallView.swift */,
 				CCFDAB292444C03700C4A228 /* BackGridView.swift */,
 				CCFDAB2B2444C0B400C4A228 /* ChalkView.swift */,
+				CCAE674D2613692200E90E86 /* LobbyView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -183,6 +188,7 @@
 				CCFDAB212444B5CF00C4A228 /* RecordModel.swift */,
 				CCFDAB232444B5F700C4A228 /* ChessboardModel.swift */,
 				CCFDAB252444BDE300C4A228 /* ChalkStack.swift */,
+				CCAE6752261376D300E90E86 /* LobbyViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -321,9 +327,11 @@
 			files = (
 				CCFDAB282444BF0B00C4A228 /* BallView.swift in Sources */,
 				CC1673A32441F8D3002B8CAB /* AppDelegate.swift in Sources */,
+				CCAE6753261376D300E90E86 /* LobbyViewModel.swift in Sources */,
 				CC1673D3244203D7002B8CAB /* BallViewModel.swift in Sources */,
 				CCFDAB222444B5CF00C4A228 /* RecordModel.swift in Sources */,
 				CCFDAB2C2444C0B400C4A228 /* ChalkView.swift in Sources */,
+				CCAE674E2613692200E90E86 /* LobbyView.swift in Sources */,
 				CC1673A52441F8D3002B8CAB /* SceneDelegate.swift in Sources */,
 				CCFDAB262444BDE300C4A228 /* ChalkStack.swift in Sources */,
 				CCFDAB1E2444B1AF00C4A228 /* RecordView.swift in Sources */,
