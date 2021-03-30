@@ -24,6 +24,7 @@ class Chessboard: ObservableObject {
     var scoreTime:Int = 1
     {
         willSet {
+
             self.objectWillChange.send()
         }
     }
@@ -135,11 +136,13 @@ class Chessboard: ObservableObject {
         self.shouldRowUp = false
         if !detectOutRange {
             self.level += 1
+            MusicHelper.sharedHelper.playSound(name: "level_up", type: "wav")
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 self.operationChess()
             }
         } else {
              DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                MusicHelper.sharedHelper.playSound(name: "fail", type: "wav")
                 self.gameOver = true
             }
         }
@@ -201,6 +204,16 @@ class Chessboard: ObservableObject {
 
             self!.checkChessBoard()
             if self!.needBang {
+                switch self!.scoreTime {
+                case 1:
+                    MusicHelper.sharedHelper.playSound(name: "chain1", type: "wav")
+                case 2:
+                    MusicHelper.sharedHelper.playSound(name: "chain2", type: "wav")
+                case 3:
+                    MusicHelper.sharedHelper.playSound(name: "chain3", type: "wav")
+                default:
+                    MusicHelper.sharedHelper.playSound(name: "chain3", type: "wav")
+                }
                 withAnimation(.spring()) {
                      self!.scoreTime += 1
                 }
@@ -227,6 +240,7 @@ class Chessboard: ObservableObject {
         let numArray = self.grid.filter{ $0.state != .null }
         
         if numArray.count == self.rows * self.columns {
+            MusicHelper.sharedHelper.playSound(name: "fail", type: "wav")
             self.gameOver = true
         }
     }
@@ -420,6 +434,7 @@ class Chessboard: ObservableObject {
                     if item.shouldBang {
                         item.ballScale = 3.0
                         item.opacity = 0
+                        MusicHelper.sharedHelper.playSound(name: "ball_bang", type: "wav")
                     }
                 }
             }

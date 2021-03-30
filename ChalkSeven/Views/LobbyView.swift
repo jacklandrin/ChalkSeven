@@ -12,26 +12,37 @@ struct LobbyView: View {
     @ObservedObject var lobby = LobbyViewModel()
     @State var showGame = false
     @State var showRecords = false
+    @State var showSetting = false
     @State var isNavigationBarHidden: Bool = true
     var body: some View {
         NavigationView {
             VStack {
-                NavigationLink(
-                    destination: ChalkSevenView().environmentObject(Chessboard()),
-                    isActive: $showGame,
-                    label: {
-                        Text("")
-                    }).frame(width: 0, height: 0)
-                    .hidden()
-                
-                NavigationLink(
-                    destination: RecordView().environmentObject(RecordList.shared),
-                    isActive: $showRecords,
-                    label: {
-                        Text("")
-                    }).frame(width: 0, height: 0)
-                    .hidden()
-                
+                HStack {
+                    NavigationLink(
+                        destination: ChalkSevenView().environmentObject(Chessboard()),
+                        isActive: $showGame,
+                        label: {
+                            Text("")
+                        }).frame(width: 0, height: 0)
+                        .hidden()
+                    
+                    NavigationLink(
+                        destination: RecordView().environmentObject(RecordList.shared),
+                        isActive: $showRecords,
+                        label: {
+                            Text("")
+                        }).frame(width: 0, height: 0)
+                        .hidden()
+                    
+                    NavigationLink(
+                        destination: SettingView(),
+                        isActive: $showSetting,
+                        label: {
+                            Text("")
+                        }).frame(width: 0, height: 0)
+                        .hidden()
+                }
+                                
                 Spacer().frame(maxHeight:20)
                 Image("logo").resizable()
                     .scaledToFit()
@@ -66,7 +77,7 @@ struct LobbyView: View {
                 HStack {
                     Spacer()
                     Button(action: {
-                        
+                        showSetting = true
                     }){
                         Image("setting")
                             .resizable()
@@ -102,6 +113,8 @@ struct LobbyView: View {
         
         .onAppear{
             isNavigationBarHidden = true
+            MusicHelper.sharedHelper.playBackgroundMusic()
+            
         }
     }
 }
