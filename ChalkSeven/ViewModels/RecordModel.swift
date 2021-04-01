@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 struct Record: Codable, Identifiable, Hashable {
-    let id = UUID()
+    var id = UUID()
     var score : Int = 0
     var level : Int = 1
     var date: String

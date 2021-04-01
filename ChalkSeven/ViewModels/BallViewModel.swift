@@ -112,7 +112,7 @@ extension BallModel {
     
     func generateNewBall() {
         RamdomBallNumberGenerator.generator.nextNumber()
-        self.num = .one//BallNumber.random()
+        self.num = BallNumber.random()
         self.state = BallState.randomNewBall()
     }
 }
