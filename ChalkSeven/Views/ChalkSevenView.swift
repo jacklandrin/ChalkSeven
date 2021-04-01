@@ -15,6 +15,7 @@ struct ChalkSevenView: View {
     @State var newBallOffsetX: CGFloat = 0.0
     @State var lastNewBallOffsetX: CGFloat = 0.0
     @State var newBallOffsetY: CGFloat = newBallDefaultY
+    @State var gameHasShown = false
     @ObservedObject var musicHelper = MusicHelper.sharedHelper
     
     let impactFeedback = UIImpactFeedbackGenerator(style: .light)
@@ -46,14 +47,15 @@ struct ChalkSevenView: View {
                    .frame(width:ballEdge * 7, height: ballEdge * 7)
                .disabled(self.chessboard.operating)
                 .padding(35)
-              
-            HStack(spacing:0) {
-                ForEach (0..<self.chessboard.columns, id: \.self) { column in
-                    Ball().environmentObject(self.chessboard.outRangeBalls[column])
-                       .allowsHitTesting(false)
-                  }
-            }.offset(y:newBallDefaultY + ballEdge)
             
+            if gameHasShown {
+                HStack(spacing:0) {
+                    ForEach (0..<self.chessboard.columns, id: \.self) { column in
+                        Ball().environmentObject(self.chessboard.outRangeBalls[column])
+                           .allowsHitTesting(false)
+                      }
+                }.offset(y:newBallDefaultY + ballEdge)
+                
                VStack(spacing:0) {
                 ForEach (0..<self.chessboard.rows, id: \.self) { row in
                            HStack(spacing:0) {
@@ -65,21 +67,26 @@ struct ChalkSevenView: View {
                    }
                }.allowsHitTesting(false)
                    .animation(.spring())
-               Ball().environmentObject(self.chessboard.newBall).offset(x: self.newBallOffsetX ,y: self.newBallOffsetY)
-            
-        if self.chessboard.scoreTime != 1 {
-            
-            if #available(iOS 14, *) {
-                Text("Chain X \(self.chessboard.scoreTime)")
-                    .modifier(ChainModifier(fontSize: CGFloat(self.chessboard.scoreTime)))
-            } else {
-                Text("Chain X \(self.chessboard.scoreTime)")
-                    .animation(nil) // fix text becomes ellipsis first
-                    .modifier(ChainModifier(fontSize: CGFloat(self.chessboard.scoreTime)))
+               Ball()
+                .environmentObject(self.chessboard.newBall)
+                .offset(x: self.newBallOffsetX ,y: self.newBallOffsetY)
             }
+            
+            
+            
+            if self.chessboard.scoreTime != 1 {
+            
+                if #available(iOS 14, *) {
+                    Text("Chain X \(self.chessboard.scoreTime)")
+                        .modifier(ChainModifier(fontSize: CGFloat(self.chessboard.scoreTime)))
+                } else {
+                    Text("Chain X \(self.chessboard.scoreTime)")
+                        .animation(nil) // fix text becomes ellipsis first
+                        .modifier(ChainModifier(fontSize: CGFloat(self.chessboard.scoreTime)))
+                }
                 
                 
-        }
+            }
             
            }.padding(.top, 100)
             
@@ -106,11 +113,20 @@ struct ChalkSevenView: View {
                self.moveNewBall(self.newBallOffsetX)
                self.lastNewBallOffsetX = self.newBallOffsetX
        })
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+//                self.chessboard.prepareNewBall()
+                self.gameHasShown = true
+            }
+        }
+        .onDisappear {
+            self.gameHasShown = false
+        }
        .alert(isPresented: .init(get: {self.chessboard.gameOver}, set: {self.chessboard.gameOver = $0 })) {
            Alert(title: Text("Game Over"), message: Text("Try again?"), dismissButton: .default(Text("Yes"), action: {
                withAnimation(.easeInOut) {
                 RecordList.shared.createNewRecord(score: self.chessboard.score, level: self.chessboard.level)
-                   self.chessboard.createChessBoard()
+                    self.chessboard.createChessBoard()
                     }
                 }
                ))

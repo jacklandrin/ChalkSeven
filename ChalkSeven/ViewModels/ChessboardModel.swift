@@ -72,9 +72,7 @@ class Chessboard: ObservableObject {
         }
     }
 
-    
-    
-   var newBall = BallModel(num: BallNumber.random())
+    var newBall = BallModel(num: RamdomBallNumberGenerator.generator.currentBallNumber)
    {
         willSet {
             objectWillChange.send()
@@ -94,8 +92,8 @@ class Chessboard: ObservableObject {
         self.chalkStack.stackEmpty = {[weak self] in
             self?.shouldRowUp = true
         }
+        print("newBall: \(newBall)")
     }
-    
     
     /// initialize the chessboard
     func createChessBoard() {
@@ -106,6 +104,7 @@ class Chessboard: ObservableObject {
         self.collapse()
         self.prepareToStart()
         self.operating = false
+        self.chalkStack.recoverChalks()
     }
     
     func initOutRangeBalls() -> [BallModel]{

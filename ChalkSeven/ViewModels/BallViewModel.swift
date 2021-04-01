@@ -15,6 +15,14 @@ let newBallDefaultY: CGFloat = -(5 * ballEdge)
 let dropDuration = 0.3
 let basicScore = 7
 
+class RamdomBallNumberGenerator {
+    static let generator = RamdomBallNumberGenerator()
+    var currentBallNumber = BallNumber.random()
+    func nextNumber() {
+        currentBallNumber = BallNumber.random()
+    }
+}
+
 class BackGridModel: ObservableObject {
     @Published var currentColumn: Int = 7
     @Published var currentRow:Int = 7
@@ -103,7 +111,8 @@ extension BallModel {
        }
     
     func generateNewBall() {
-        self.num = BallNumber.random()
+        RamdomBallNumberGenerator.generator.nextNumber()
+        self.num = .one//BallNumber.random()
         self.state = BallState.randomNewBall()
     }
 }

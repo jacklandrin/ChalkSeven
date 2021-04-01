@@ -54,12 +54,16 @@ class ChalkStack: ObservableObject {
         self[self.totalCount - self.currentChalk].unused = false
         if self.currentChalk == self.totalCount {
             self.stackEmpty()
-            self.currentChalk = 0
-            for item in self.chalks {
-                item.unused = true
-            }
+            recoverChalks()
         }
-        
     }
+    
+    func recoverChalks() {
+        self.currentChalk = 0
+        for item in self.chalks {
+            item.unused = true
+        }
+    }
+    
 }
 

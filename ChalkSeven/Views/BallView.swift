@@ -19,7 +19,8 @@ struct Ball:View {
                 Text(ballText()).font(Font.custom("Eraser Dust", size: 40))
                     .foregroundColor(.white)
                     .opacity(0.95)
-            }.padding(2)
+            }
+            .padding(2)
         )
             .foregroundColor(ballColor())
             .frame(width:ballEdge, height:ballEdge)
@@ -27,6 +28,7 @@ struct Ball:View {
             .scaleEffect(self.ball.ballScale)
             .offset(y: self.ball.dropOffset)
             .opacity(0.90)
+            
     }
     
 
