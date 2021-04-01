@@ -27,6 +27,7 @@
 		CCAE67732613E55A00E90E86 /* chain1.wav in Resources */ = {isa = PBXBuildFile; fileRef = CCAE67702613E55A00E90E86 /* chain1.wav */; };
 		CCAE67742613E55A00E90E86 /* chain3.wav in Resources */ = {isa = PBXBuildFile; fileRef = CCAE67712613E55A00E90E86 /* chain3.wav */; };
 		CCAE67792613E91600E90E86 /* fail.wav in Resources */ = {isa = PBXBuildFile; fileRef = CCAE67782613E91600E90E86 /* fail.wav */; };
+		CCF14D67261663DD00A4B5C5 /* dropping_whoosh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = CCF14D66261663DD00A4B5C5 /* dropping_whoosh.mp3 */; };
 		CCF7E5D82452A7E30092BCA2 /* Eraser Dust.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CCF7E5D62452A7E30092BCA2 /* Eraser Dust.ttf */; };
 		CCFDAB1E2444B1AF00C4A228 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDAB1D2444B1AF00C4A228 /* RecordView.swift */; };
 		CCFDAB222444B5CF00C4A228 /* RecordModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFDAB212444B5CF00C4A228 /* RecordModel.swift */; };
@@ -81,6 +82,7 @@
 		CCAE67702613E55A00E90E86 /* chain1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chain1.wav; sourceTree = "<group>"; };
 		CCAE67712613E55A00E90E86 /* chain3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = chain3.wav; sourceTree = "<group>"; };
 		CCAE67782613E91600E90E86 /* fail.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = fail.wav; sourceTree = "<group>"; };
+		CCF14D66261663DD00A4B5C5 /* dropping_whoosh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dropping_whoosh.mp3; sourceTree = "<group>"; };
 		CCF7E5D62452A7E30092BCA2 /* Eraser Dust.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Eraser Dust.ttf"; sourceTree = "<group>"; };
 		CCFDAB1D2444B1AF00C4A228 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		CCFDAB212444B5CF00C4A228 /* RecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordModel.swift; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 		CC66314B2612843A00E52BC1 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				CCF14D66261663DD00A4B5C5 /* dropping_whoosh.mp3 */,
 				CCAE67782613E91600E90E86 /* fail.wav */,
 				CCAE67702613E55A00E90E86 /* chain1.wav */,
 				CCAE676F2613E55A00E90E86 /* chain2.wav */,
@@ -335,6 +338,7 @@
 				CCAE67742613E55A00E90E86 /* chain3.wav in Resources */,
 				CC6631502612845500E52BC1 /* chalk7.m4a in Resources */,
 				CCAE67732613E55A00E90E86 /* chain1.wav in Resources */,
+				CCF14D67261663DD00A4B5C5 /* dropping_whoosh.mp3 in Resources */,
 				CCAE676B2613DF7400E90E86 /* level_up.wav in Resources */,
 				CC1673AF2441F8D6002B8CAB /* LaunchScreen.storyboard in Resources */,
 				CCAE67722613E55A00E90E86 /* chain2.wav in Resources */,

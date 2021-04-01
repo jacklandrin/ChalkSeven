@@ -468,6 +468,7 @@ class Chessboard: ObservableObject {
         print("dropSingleColumn:\(singleColumnBalls.filter{$0.state == .number})")
         let numCount = singleColumnBalls.filter{$0.state != .null}.count
         if numCount < rows {
+            MusicHelper.sharedHelper.playSound(name: "dropping_whoosh", type: "mp3")
             withAnimation(Animation.easeOut.delay(dropDuration + 0.2)) {
                 self.chalkStack.useChalk()
                 self[rows - numCount - 1, column].copyNewBall(self.newBall)
