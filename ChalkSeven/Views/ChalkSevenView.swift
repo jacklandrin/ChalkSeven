@@ -46,7 +46,8 @@ struct ChalkSevenView: View {
                }).environmentObject(backgrid)
                    .frame(width:ballEdge * 7, height: ballEdge * 7)
                .disabled(self.chessboard.operating)
-                .padding(35)
+               .padding(35)
+                
             
             if gameHasShown {
                 HStack(spacing:0) {
@@ -76,7 +77,7 @@ struct ChalkSevenView: View {
             
             if self.chessboard.scoreTime != 1 {
             
-                if #available(iOS 14, *) {
+               if #available(iOS 14, *) {
                     Text("Chain X \(self.chessboard.scoreTime)")
                         .modifier(ChainModifier(fontSize: CGFloat(self.chessboard.scoreTime)))
                 } else {
@@ -192,6 +193,9 @@ struct ChainModifier: ViewModifier {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ChalkSevenView().environmentObject(Chessboard())
+        Group {
+            ChalkSevenView().preferredColorScheme(.dark).environmentObject(Chessboard())
+            ChalkSevenView().previewDevice("iPad mini (6th generation)").preferredColorScheme(.dark).environmentObject(Chessboard())
+        }
     }
 }

@@ -32,7 +32,7 @@ struct BackGrid: View {
                     )
                         .foregroundColor(self.backgrid.currentColumn == column ? Color(red: 0.5, green: 0.5, blue: 0.5, opacity: 0.5) : .clear)
                         .frame(width:ballEdge,height: 7 * ballEdge)
-                        .animation(.spring())
+                        //.animation(.spring())
                     .contentShape(Rectangle())
                         .simultaneousGesture(TapGesture(count: 1)
                             .onEnded {
